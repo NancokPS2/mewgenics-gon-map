@@ -47,7 +47,7 @@ AbilityIdentifier {
 ### Glossary
 (str) = String of characters.  
 (bool) = Boolean, usually true or false. Altho numbers can also be treated as booleans (0 or less = false, 1 or more = true)  
-(num) = Number. It can be replaced by equations. Such as 2+variable_name 
+(num) = Number which can have decimals separated by a dot (.) (most things use integers, use decimals with care). It can be replaced by equations. Such as 2+variable_name 
 (list) = Can have any amount of entries, separated by line breaks.  
 (array) = Contains any amount of values separated by spaces and surrounded by []s. If there's only 1 element, the []s can be skipped.
 (dict) = Dictionary, it contains other fields inside. Elements that are further to the left (have less indentation) and have elements below them are always dictionaries, and as such contain other fields inside of them. I won't be noting them down below.  
@@ -70,6 +70,9 @@ AbilityIdentifier {
   - particle(str): A particle to spawn at the target location.
   - projectile(str): Seemingly launches a projectile from the source to the target.
   - single_projectile(bool): Seems to prevent AoE abilities from launching a projectile at each targeted tile. Instead firing only at the targeted tile.
+  - ignore_slowtiles(bool): Causes the animation to ignore the slowdown caused by tiles (if the user moves trough one during its use)
+  - chain_movieclip(str): Unknown.
+  - chain_distance(num): Unknown. Seems to be defined as a decimal.
 
 - cost: Requirement for using the spell, it can be bypassed by effects that automatically cast spells.
   - infcantrip(bool): If false, this can only be used once per turn.
@@ -128,7 +131,9 @@ These are identifiers that count as values, and can be used in number math.
 - occupied_tiles: Only allows tiles which have something(?) in them.
 
 ### Knockback mode
-- character_to_tile: Unknown
+- character_to_tile
+- character_to_tile_4snap
+- pull_to_character
 
 ### Target restriction
 - must_be_moveable
@@ -149,6 +154,12 @@ These are identifiers that count as values, and can be used in number math.
 - pointout
 - throwArrow
 - throwobject
+- roll
+- startroll
+- endroll
+- buttScootStart
+- buttScootLoop
+- buttScootEnd
 
 ### Particle
 - fx_statup
@@ -158,6 +169,7 @@ These are identifiers that count as values, and can be used in number math.
 ### Projectile
 - ArrowProjectile
 - spitprojectile
+- HookProjectile
 
 ### Elements
 - Holy
@@ -168,9 +180,9 @@ These are identifiers that count as values, and can be used in number math.
 - BiggestFood
 
 ### Effects
-These all take numbers as their value. All effects have a number value that denotes their stacks unless stated otherwise. Some effects use up their stacks instantly and as such are never displayed in-game.
+All effects have a number value that denotes their stacks unless stated otherwise. Some effects use up their stacks instantly and as such are never displayed in-game. All effects seem to need at least 1 as their number to have any effect.
 - Sleep
-- Shield
+- Shield: Instantly recovers shield equal to the number.
 - AllStatsUp
 - StrengthUp
 - DexterityUp
@@ -180,8 +192,11 @@ These all take numbers as their value. All effects have a number value that deno
 - RandomStatUp
 - Thorns
 - Marked
+- Bleed
+- FaceAway
 - Fury: Chance to repeat the attack. The number correlates to the repeat chance, from 0 to 100.
 - TempSpellDamageUp
+- CollectsPickups
 - NextAttacKBonusRange: Increases the range of the next hit.
 - NextAttackSpecialCrit: Has special effects the next time an attack crits. Used by Gamble. This effect can either use a simple number or be treated as a dictionary.
   - extra_coins_per_stack(num)
