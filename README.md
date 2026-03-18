@@ -64,6 +64,8 @@ Abilities, passives, statuses, weathers and other objects with identifiers also 
   - class(ident): Defines the color of the background, doesn't seem to affect anything else since the level up choice pools are decided separately.
   - type_icon(str): A small icon overlayed on the ability supposed to denote the nature of the ability.
  
+- tags(array): Contains simple keywords that other abilities can use to identify the object.
+
 - graphics: The visuals caused by the ability in combat.
   - sync_speed(num): Looks like a modifier for the speed, since it is based on other factors like the cat's speed and tile being traversed.
   - max_tiles_single_loop(num): How many tiles can be traversed before the ability loops. Used by the Roll spell.
@@ -78,12 +80,16 @@ Abilities, passives, statuses, weathers and other objects with identifiers also 
   - chain_distance(num): Unknown. Seems to be defined as a decimal.
   - use_projectile(bool)
   - affected_particle(ident)
+  - lob_height(num): Seems to affect the arc of thrown projectiles.
+  - animation_out(ident): Unknown, used by Tunnel to define some sort of end animation.
+  - animation_in(ident): Same as above, but for the start.
 
 - cost: Requirement for using the spell, it can be bypassed by effects that automatically cast spells.
   - infcantrip(bool): If false, this can only be used once per turn.
   - mana(num): The amount of current mana required to use the ability.
   - act_points(num): Unclear. Seems like every ability starts with 1 act_points, so by setting this to 1, you can limit its use to once per turn.
   - charge(num): Unknown
+  - once_per_fight(bool)
 
 - target: Denotes the tiles that will be targeted when this is aimed.
   - target_mode(ident): Seems like a general filter of what can be selected as the target.
@@ -122,15 +128,33 @@ These are identifiers that count as values, and can be used in number math.
 - bonus_ranged_damage: Seems to be the extra damage granted by Dexterity
 - aux: Unknown.
 - x: A number variable that is empty by default and can be set within the ability definition.
+- str: Strength
+- dex: Dexterity
+- int: Intelligence
+- mov: Speed?
+- con: Consitution
+- cha: Charisma
+- lck: Luck
+
+### Tags
+
+#### Ability
+- noncopyable
+- musical
 
 ### Ability type
 - none
 - spell
 - melee
+- ranged
+- status_spell
+- misc
+- unknown
 
 ### Target mode
-- tile: Tiles that are not occupied(?)
+- tile
 - direction
+- random_tile
 
 ### Range mode
 - cross: Cardinal directions
@@ -147,10 +171,11 @@ These are identifiers that count as values, and can be used in number math.
 - character_to_tile_4snap
 - pull_to_character
 
-### Target reidentiction
+### Target restriction
 - must_be_moveable
 - must_move
 - must_have_ally
+- must_have_animate_character: Seems to expect the target to be alive? Used by Rat Roulette
 
 ### Type icon
 - defense
@@ -168,6 +193,14 @@ These are identifiers that count as values, and can be used in number math.
 - throwobject
 - poopfart
 - hopinplace
+- thumbsup
+- cheat
+- castspell
+- proud
+- pissYourself
+- dig
+- digUp
+- digDown
 - roll
 - startroll
 - endroll
@@ -179,12 +212,14 @@ These are identifiers that count as values, and can be used in number math.
 - fx_statup
 - HealSmall
 - MagicMissileBlast
+- Wave
 
 ### Projectile
 - ArrowProjectile
 - spitprojectile
 - HookProjectile
 - Fishball
+- SmallRock
 
 ### Elements
 - Holy
@@ -196,8 +231,11 @@ These are identifiers that count as values, and can be used in number math.
 - CharmedMaggot
 - Poop
 
+### Tiles
+- WaterTile
+
 ### Effects
-**It is currently unclear which effects are valid as passives and which as ability effects.**  
+**It is currently unclear which effects are valid as passives, statuses or ability effects, likely candidates for passives are denoted with a \* preffix.**  
 All effects have a number value that denotes their stacks unless stated otherwise. Some effects use up their stacks instantly and as such are never displayed in-game. All effects seem to need at least 1 as their number to have any effect (unless they are a (dict)). Example: `Bleed 1`
 Seems like effects also support setting a chance alongside their number, using an array where the stacks is the first value and the chance is the second one (this is the chance of the effect being applied). Example: `Stun [1 .15]`
 
@@ -207,6 +245,8 @@ Seems like effects also support setting a chance alongside their number, using a
 - Confusion
 - Bleed
 - Marked
+- Sleep
+- DoubleStatus: Doubles the stacks of the given "status".
 
 #### Buffs
 - AllStatsUp
@@ -215,25 +255,36 @@ Seems like effects also support setting a chance alongside their number, using a
 - IntelligenceUp
 - ConstitutionUp
 - SpeedUp
+- CharismaUp
+- LuckUp
 - RandomStatUp
-- Thorns
+- Thorns*
 - CritChanceUp: The number correlates to the dodge chance, from 0 to 100.
-- Fury: Chance to repeat the attack. The number correlates to the repeat chance, from 0 to 100.
+- Fury*: Chance to repeat the attack. The number correlates to the repeat chance, from 0 to 100.
 - TempSpellDamageUp
-- Reflect
-- HealthRegenUp
-- IgnoreTiles
-- Temporary: This is a special effect that causes a status effect
+- Reflect*
+- HealthRegenUp*
+- IgnoreTiles*
+- Temporary: This is a special effect that causes a status effect for a limited time
   - status(ident): The identifier of the status effect to apply
   - stacks(num): The stacks of the status
   - turns(num): Turn duration, once these turns pass you loose all stacks.
   - expires_on_begin_turn(bool)
+- Cleanse: Removes all debuffs and gives divine shield per cleared debuff. Use 0 to disable gaining shields while still cleansing the target.
+
+#### Damaging
+- RevengeDamage*: Causes an effect on an attacker. Works similar to damage_instance
+  - effects
 
 #### Resource change
 - Shield: Instantly recovers shield equal to the number.
 - ManaSteal: Takes mana from a unit. Seems like this steals ALL mana at -1 stacks
 - ReduceManaCost
 - ReduceManaCostExcludeBrainstorm: Funi hardcoding. Used exclusively by brainstorm to ensure it cannot make itself cheaper.
+- RefreshMovePoints: Restores movement.
+- RefreshActPoints: Restores basic attack.
+- RefreshItemAbilities: Restores item use.
+- TakeExtraTurn: Gives a free turn after the current one.
 
 #### Mobility
 - Displace: The target is moved by a tile in a random direction. Used by Dump
@@ -244,10 +295,15 @@ Seems like effects also support setting a chance alongside their number, using a
 - ConjureBonusAbility: This seems to have the value of an ability pool (ident) to draw from and use. Used by Ponder's upgrade.
 - SafeDie: Downs the cat without injuries.
 - ReviveNextRound: The numbers represents how many turns before the cat revives. Higher numbers are worse.
+- CopyCatPassive_Initializer: Special effect for making CopyCat start copying spells. Should be used as a bonus_passive. The number can be 1 or 2 for the unupgraded or upgraded version respectively.
+- Metronome: Uses a random spell. The number can be 1 or 2 for the unupgraded or upgraded version respectively.
+- CanceledQueuedInput: Unknown. It is used by some set bonuses that trigger a similar effect to Second Wind, like the Fighter item set.
+- ChangeTile: Replaces the targeted tile. Takes an ident
 
 #### Hit effects
 - NextAttacKBonusRange: Increases the range of the next hit.
 - ApplyToSourceOnKill: This is a special effect that applies an effect to the user when it kills something. Defined as a list just like regular effects are.
+- NextActionLuckUp: The number corresponds to the luck gained until next hit.
 - NextAttackSpecialCrit: Has special effects the next time an attack crits. Used by Gamble. This effect can either use a simple number or be treated as a dictionary.
   - extra_coins_per_stack(num)
   - crit_multiplier_bonus(num)
@@ -257,6 +313,7 @@ Seems like effects also support setting a chance alongside their number, using a
 - LeaveBehind: This is an special kind of list that defines the type of "thing" to leave behind, then its identifier. The one example i found is `object CharmedMaggot`  
 - ObjectOnHit: Same as above, may not work if the target area is occupied. Used by Dump
 - SpawnThingIfHitKills: Spawns something on kill. Defined as an ident
+- BounceObject: Throws an object at the target which bounces off them, dealing damage. Defined as an ident. Used by Stun (the spell)
 
 #### Potentially removed/unused. There's no guarantee these will work.
 - TilesMovedToStrength
@@ -273,3 +330,16 @@ Seems like effects also support setting a chance alongside their number, using a
   - stacks(num)
   - count(num)
 
+### Effect conditions
+These are special objects that "contain" the actual effect and act as a requirement for the effect to go off.
+Example:
+```
+effects {
+  Conditional_BossOrBig {
+    Immobile [1 .25]
+  }
+}
+```
+
+- Conditional_BossOrBig
+- Conditional_NotBossOrBig
