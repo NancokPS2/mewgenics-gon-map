@@ -1,0 +1,66 @@
+This is a backup cuz i don't trust NexusMods, taken from https://www.nexusmods.com/mewgenics/articles/2 which was in turn taken from posts by Tyler Glaiel in The End Is Nigh discord (which uses the same engine, he was discussing features he backported from Mewgenics so presumably the features work in Mewgenics)
+
+"When working with text, gon, or CSV files you can now add ".append", ".merge" or ".patch" to their filename. .patch is only relevant for gon (.txt) files. When doing swf list you should .append your swf to the end of it instead of overwriting the existing file, to make it so art mods can stack
+
+this is the file you'd add to load one additional swf
+
+swflist.text.append
+
+game [
+myadditionalswf.swf
+]
+
+.append does what it sounds like, its like gluing 2 files together.
+
+.merge will seek out individual fields in a file and replace just those fields (ex this is a valid file that can change the palette on world 1
+
+
+tilesets.txt.merge
+1 {
+palette 5
+}
+
+
+.patch is for more complicated stuff, if you wanted to add an art alt to a level without changing the rest, you could do
+
+tilesets.txt.patch
+1 {
+palette 5
+art_alts.append [
+  [Player PlayerRetro]
+]
+}
+
+for .patch, you can name individual fields with ".overwrite", ".append", ".merge", ".add" and ".multiply"
+
+
+There's also some stuff to be gleaned from looking at the documentation on the github page for the .gon format
+https://github.com/TylerGlaiel/GON/commit/7f9600b278231a1d458e0ca7f44784e10cffa953
+
+
+
+So for .csv.merge files there seems to be no way to overwrite a specific row/cell without having the rest of the csv filled with blank values.
+
+Let's say my csv is:
+
+1,2,3,4
+2,2,3,4
+3,2,3,4
+
+and I only want to overwrite 2,2,3,4
+to be 2,5,3,4
+I would have to do:
+
+,,,
+,5,,
+,,,
+
+But if a new row (0,2,3,4) gets added to say the top of that csv down the line
+I would end up with something like (when the merge gets applied):
+
+0,2,3,4
+1,5,3,4
+2,2,3,4
+3,2,3,4
+
+So it is still potentially good for mod compatibility but not necessarily future proof for game updates. 
