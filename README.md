@@ -2,7 +2,7 @@
 ### UNDER HEAVY CONSTRUCTION
 
 ## Summary of GON formatting.
-These are just simpler JSON. Only supports character strings (the "s are optional) and numbers only. Line breaks denote ends of line. {}s are still used to denote scopes. 
+These are just simpler JSON. Only supports character strings (the "s are optional) and numbers. Line breaks denote ends of line. {}s are still used to denote scopes. 
 Check https://github.com/NancokPS2/mewgenics-gon-map/blob/main/gon_description.txt for more information.
 
 ## Property layout
@@ -12,7 +12,7 @@ Elements that are further to the left (have less indentation) are always diction
 
 Example of an ability:
 - meta (dict)
-  - name (ident)
+  - name (str)
   - class (ident)
 - damage_instances (dict)
   - effects (list)
