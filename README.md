@@ -98,8 +98,8 @@ Abilities, passives, statuses, weathers and other objects with identifiers also 
   - min_range(num): Can't target tiles closer than this. Used by hunter's default attack
   - aoe_mode(ident): The shape of the AoE
   - max_aoe(num): How big the AoE can be
-  - reidentictions(array): Simple identifiers that add limitations to what the ability can hit
-  - identaight_shot(bool): Unknown. May refer to line of sight requirements.
+  - restrictions(array): Simple identifiers that add limitations to what the ability can hit
+  - straight_shot(bool): Unknown. May refer to line of sight requirements.
   - range_display_include_character_size(bool): Possibly modifies the targeting displayed to account for the size of the character.
   - aoe_considers_character_size(bool): Same as above, but for AoE
   - aoe_excludes_self(bool): Prevents selecting yourself as the target.
@@ -159,7 +159,7 @@ These are identifiers that count as values, and can be used in number math.
 ### Range mode
 - cross: Cardinal directions
 - diagcross: Like cross, but diagonal.
-- ground_mode: The range becomes anywhere you could reach walking.
+- ground_move: The range becomes anywhere you could reach walking.
 
 ### AoE mode
 - standard: Diamond shape?
