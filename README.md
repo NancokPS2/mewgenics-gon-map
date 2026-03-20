@@ -2,7 +2,7 @@
 ### UNDER HEAVY CONSTRUCTION
 
 ## Summary of GON formatting.
-These are just simpler JSON. Only supports character strings (the "s are optional) and numbers. Line breaks denote ends of line. {}s are still used to denote scopes. 
+These are just simpler JSON. Only supports character strings (the "s are seemingly optional) and numbers. Line breaks denote ends of line. {}s are still used to denote scopes. It also supports comments with // 
 Check https://github.com/NancokPS2/mewgenics-gon-map/blob/main/gon_description.txt for more information.
 Files can have `.patch`, `.merge` or `.append` at the end of their names to let the game know how to treat its contents. Example: `classes.gon` to `classes.gon.patch`.  
 
@@ -20,20 +20,21 @@ Adds 1 stack of Thorns to the usual effects of backflip.
 As of the current version of the game, all strings are stored in the same .csv file. Which seems to also be compatible with the .append
 It is possible to add and even override strings by using a `combined.csv.append` file. Adding strings that already exist will cause them to take priority over the ones in the base game (last matching key is chosen)
 
-## Property layout
-These are the identifiers and fields that can be used in the files for Mewgenics specifically. (or at least the ones that will have any effect).
-Here, they are laid out as a tree format to denote fields and their hierarchy.
+## Property layout explanation
+In the following sections are the identifiers and fields that can be used in the files for Mewgenics specifically. (or at least the ones that will have any effect and have been discovered).
+In this document, they are laid out as a tree format to denote fields and their hierarchy.
 Elements that are further to the left (have less indentation) are always dictionaries, and as such contain other fields inside of them.
 
 Example of an ability:
-- meta (dict)
-  - name (str)
-  - class (ident)
-- damage_instances (dict)
-  - effects (list)
+- AbilityName (dict)
+  - meta (dict)
+    - name (str)
+    - class (ident)
+  - damage_instances (dict)
+    - effects (list)
 
   
-Translates to this in the .gon file:
+Which translates to this in the .gon file:
 
   
 ```
@@ -47,7 +48,7 @@ AbilityIdentifier {
   damage_instance {
     effects {
       Shield 5
-			DieSafe 1
+      DieSafe 1
     }
   }
 
@@ -55,23 +56,35 @@ AbilityIdentifier {
 ```
 
 ### Value types  
-- (str) = String of characters, encased between "s.  
-- (ident) = The identifier of another, appropiate object. The exact kind of object it can use varies per field. 
-- (bool) = Boolean, usually true or false. Altho numbers can also be treated as booleans (0 or less = false, 1 or more = true)  
+- (str) = An arbitrary string of characters, encased between "s. `SomeString "Text of the string"` 
+- (ident) = The identifier of another, appropiate object. The exact kind of object it can use varies per field. `SomeObject IdentifierOfAnotherObject`  
+- (bool) = Boolean, usually true or false. Altho numbers can also be treated as booleans (0 or less = false, 1 or more = true) `explodes true`  
 - (num) = Number which can have decimals separated by a dot (.) (most things use integers, use decimals with care). It can be replaced by equations. Such as 2+variable_name 
-- (list) = Can have any amount of entries, separated by line breaks.  
+- (list) = Same syntax as a dictionary. But does not have defined fields. It instead expects raw values or objects. ``  
 - (array) = Contains any amount of values separated by spaces and surrounded by []s. If there's only 1 element, the []s can be skipped.  
 - (dict) = Dictionary/objects, it contains other fields inside and are denoted by the following {}s. Elements that are further to the left (have less indentation) and have elements below them are always dictionaries, and as such contain other fields inside of them. I won't be noting them down below as it will be obvious from its sub-items.  
 
-### Most identifiers represent objects, objects can be accessed like Dictionaries
-Abilities, passives, statuses, weathers and other objects with identifiers also support being a dictionary. However, i can only document properties that are modified in the existing .gon files of the game. There may be more fields which i don't know about due to being touched solely within the code.
+### Most identifiers represent objects, objects can be initialized in various ways
+Abilities, passives, statuses, weathers and other objects (denoted by an identifier) can have a value after them to "initialize them", which essentially sets their initial value.
+Statuses typically support a number that defines their stacks, like `Bleed 1`. But the most powerful way to create an object is with a dictionary. Example:
+```
+//This is a special ability effect
+Temporary {
+	status Brace
+	stacks 1
+	turns 1
+}
+```
+Do note i can only document properties that are modified in the existing .gon files of the game. There may be more fields which i don't know about due to being touched solely within the code.
 
 
 ### Hardcoded object types (not modifyiable trough .gon files, still usable in other definitions)
 - Map layout
 
-#### Abilities
-- template(ident): Copies all of the values from the given ability.
+### Property lists
+
+#### Ability properties
+- template(ident): Copies all of the values from the given ability template. While templates use a different naming convention and are named differently. There's nothing to denote they are any different from abilities in other files. Meaning it should be possible to use any ability as a template
 - variant_of(ident): Seems to be the same as template. But it is typically used for upgraded versions.
 - meta: Mostly information displayed to the player.
   - name(str): The key for the name identing found in the translation file inside the text folder.
