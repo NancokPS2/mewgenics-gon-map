@@ -4,6 +4,21 @@
 ## Summary of GON formatting.
 These are just simpler JSON. Only supports character strings (the "s are optional) and numbers. Line breaks denote ends of line. {}s are still used to denote scopes. 
 Check https://github.com/NancokPS2/mewgenics-gon-map/blob/main/gon_description.txt for more information.
+Files can have `.patch`, `.merge` or `.append` at the end of their names to let the game know how to treat its contents. Example: `classes.gon` to `classes.gon.patch`.  
+
+When using `.patch` on the file name. You may selectively add `.overwrite`, `.append`, `.merge`, `.add` or `.multiply` to the identifiers themselves to choose an operation for them specifically. Example: 
+```
+Backflip {
+	effects.append {
+		Thorns 1
+	}
+}
+```
+Adds 1 stack of Thorns to the usual effects of backflip.
+
+### CSV/text changes.
+As of the current version of the game, all strings are stored in the same .csv file. Which seems to also be compatible with the .append
+It is possible to add and even override strings by using a `combined.csv.append` file. Adding strings that already exist will cause them to take priority over the ones in the base game (last matching key is chosen)
 
 ## Property layout
 These are the identifiers and fields that can be used in the files for Mewgenics specifically. (or at least the ones that will have any effect).
@@ -39,7 +54,7 @@ AbilityIdentifier {
 }
 ```
 
-### Glossary
+### Value types  
 - (str) = String of characters, encased between "s.  
 - (ident) = The identifier of another, appropiate object. The exact kind of object it can use varies per field. 
 - (bool) = Boolean, usually true or false. Altho numbers can also be treated as booleans (0 or less = false, 1 or more = true)  
