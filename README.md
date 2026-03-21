@@ -89,7 +89,7 @@ Do note i can only document properties that are modified in the existing .gon fi
 - meta: Mostly information displayed to the player.
   - name(str): The key for the name identing found in the translation file inside the text folder.
   - desc(str): The same as name, but for the description.
-  - class(ident): Defines the color of the background, doesn't seem to affect anything else since the level up choice pools are decided separately.
+  - [class](https://github.com/NancokPS2/mewgenics-gon-map/blob/main/README.md#ability-class)(ident): Defines the color of the background, doesn't seem to affect anything else since the level up choice pools are decided separately.
   - type_icon(str): A small icon overlayed on the ability supposed to denote the nature of the ability.
  
 - tags(array): Contains simple keywords that other abilities can use to identify the object.
@@ -97,11 +97,11 @@ Do note i can only document properties that are modified in the existing .gon fi
 - graphics: The visuals caused by the ability in combat.
   - sync_speed(num): Looks like a modifier for the speed, since it is based on other factors like the cat's speed and tile being traversed.
   - max_tiles_single_loop(num): How many tiles can be traversed before the ability loops. Used by the Roll spell.
-  - move_start_animation(ident): An animation to play before the main animation plays.
-  - move_end_animation(ident): Same, but for after the main animation plays.
-  - animation(ident): The animation that the unit uses when using the ability.
-  - particle(ident): A particle to spawn at the target location.
-  - projectile(ident): Seemingly launches a projectile from the source to the target.
+  - [move_start_animation](https://github.com/NancokPS2/mewgenics-gon-map/blob/main/README.md#animation)(ident): An animation to play before the main animation plays.
+  - [move_end_animation](https://github.com/NancokPS2/mewgenics-gon-map/blob/main/README.md#animation)(ident): Same, but for after the main animation plays.
+  - [animation](https://github.com/NancokPS2/mewgenics-gon-map/blob/main/README.md#animation)(ident): The animation that the unit uses when using the ability.
+  - [particle](https://github.com/NancokPS2/mewgenics-gon-map/blob/main/README.md#particle)(ident): A particle to spawn at the target location.
+  - [projectile](https://github.com/NancokPS2/mewgenics-gon-map/blob/main/README.md#projectile)(ident): Seemingly launches a projectile from the source to the target.
   - single_projectile(bool): Seems to prevent AoE abilities from launching a projectile at each targeted tile. Instead firing only at the targeted tile.
   - ignore_slowtiles(bool): Causes the animation to ignore the slowdown caused by tiles (if the user moves trough one during its use)
   - chain_movieclip(ident): Unknown.
@@ -109,8 +109,8 @@ Do note i can only document properties that are modified in the existing .gon fi
   - use_projectile(bool)
   - affected_particle(ident)
   - lob_height(num): Seems to affect the arc of thrown projectiles.
-  - animation_out(ident): Unknown, used by Tunnel to define some sort of end animation.
-  - animation_in(ident): Same as above, but for the start.
+  - [animation_out](https://github.com/NancokPS2/mewgenics-gon-map/blob/main/README.md#animation)(ident): Unknown, used by Tunnel to define some sort of end animation.
+  - [animation_in](https://github.com/NancokPS2/mewgenics-gon-map/blob/main/README.md#animation)(ident): Same as above, but for the start.
 
 - cost: Requirement for using the spell, it can be bypassed by effects that automatically cast spells.
   - infcantrip(bool): If false, this can only be used once per turn.
@@ -178,6 +178,9 @@ These are identifiers that count as values, and can be used in number math.
 - status_spell
 - misc
 - unknown
+
+### Ability class
+- Colorless
 
 ### Target mode
 - tile
