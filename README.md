@@ -120,24 +120,24 @@ Do note i can only document properties that are modified in the existing .gon fi
   - once_per_fight(bool)
 
 - target: Denotes the tiles that will be targeted when this is aimed.
-  - target_mode(ident): Seems like a general filter of what can be selected as the target.
-  - range_mode(ident): The shape of the AoE (i assume this is a diamond-shaped area by default)
+  - [target_mode](https://github.com/NancokPS2/mewgenics-gon-map/blob/main/README.md#target-mode)(ident): Seems like a general filter of what can be selected as the target.
+  - [range_mode](https://github.com/NancokPS2/mewgenics-gon-map/blob/main/README.md#range-mode)(ident): The shape of the AoE (i assume this is a diamond-shaped area by default)
   - max_range(num): How far away the ability can reach. Seems to allow using "mov" as the value which may refer to movement range.
   - min_range(num): Can't target tiles closer than this. Used by hunter's default attack
-  - aoe_mode(ident): The shape of the AoE
+  - [aoe_mode](https://github.com/NancokPS2/mewgenics-gon-map/blob/main/README.md#aoe-mode)(ident): The shape of the AoE
   - max_aoe(num): How big the AoE can be
   - restrictions(array): Simple identifiers that add limitations to what the ability can hit
   - straight_shot(bool): Unknown. May refer to line of sight requirements.
   - range_display_include_character_size(bool): Possibly modifies the targeting displayed to account for the size of the character.
   - aoe_considers_character_size(bool): Same as above, but for AoE
   - aoe_excludes_self(bool): Prevents selecting yourself as the target.
-  - knockback_mode(ident): Unknown.
+  - [knockback_mode](https://github.com/NancokPS2/mewgenics-gon-map/blob/main/README.md#knockback-mode)(ident): Unknown.
   - allow_diagonals(bool): Allows targeting to "fit" trough diagonal gaps between 2 objects which are only diagonally connected. 
  
 - temporary_effects(list): Seems the same as the effects from damage_instance. But only until the ability resolves and applied to the user.
 
 - damage_instance: Object containing what will happen to each target hit. But doesn't have to necessarily deal damage, nor does it seem to always trigger damage-based passives.
-  - type(ident): Unknown. 
+  - [type](https://github.com/NancokPS2/mewgenics-gon-map/blob/main/README.md#effect-type)(ident): Unknown. 
   - heal(num): Recovers health
   - damage(num): The amount of damage dealt.
   - piercing(bool): Ignores shield.
@@ -146,7 +146,7 @@ Do note i can only document properties that are modified in the existing .gon fi
   - makes_contact(bool): Mostly for things like thorns.
   - override_trample_damage(bool): If the user tramples during the use of this ability. The trample damage is replaced by the damage of this effect and ignores the trample stacks.
   - effects(list): Every effect that will trigger on the target due to this instance
-  - elements(array): The elements associated with the ability.
+  - [elements](https://github.com/NancokPS2/mewgenics-gon-map/blob/main/README.md#elements)(array): The elements associated with the ability.
 - bonus_passives(list): Gives any amount of passives to the target, unclear if it lasts past the current fight. It is also unclear if effects are also accepted for this list.
 
 ## Object identifier list
@@ -170,7 +170,7 @@ These are identifiers that count as values, and can be used in number math.
 - noncopyable
 - musical
 
-### Ability type
+### Effect type
 - none
 - spell
 - melee
